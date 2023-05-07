@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <h1>Rock Paper Scissors</h1>
+    <div id="game">
+      <div id="buttons">
+        <button id="rock">Rock</button>
+        <button id="paper">Paper</button>
+        <button id="scissors">Scissors</button>
+      </div>
+      <div id="result"></div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
+<style>h1 {
+  text-align: center;
+  font-size: 3em;
+}
+
+#game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1em;
+}
+
+button {
+  font-size: 1.5em;
+  margin: 0 0.5em;
+  padding: 0.5em 1em;
+}
+
+#result {
+  font-size: 2em;
+  text-align: center;
+}
+</style><script>// get the buttons and result element
+const rockBtn = document.getElementById("rock");
+const paperBtn = document.getElementById("paper");
+const scissorsBtn = document.getElementById("scissors");
+const resultDiv = document.getElementById("result");
+
+// define the choices array
+const choices = ["rock", "paper", "scissors"];
+
+// add event listeners to the buttons
+rockBtn.addEventListener("click", playGame);
+paperBtn.addEventListener("click", playGame);
+scissorsBtn.addEventListener("click", playGame);
+
+// play the game function
+function playGame(event) {
+	// get the player's choice
+	const playerChoice = event.target.id;
+
+	// generate a random computer choice
+	const randomNum = Math.round(Math.random() * 2);
+	const computerChoice = choices[randomNum];
+
+	// determine the winner
+	let winner;
+	if (playerChoice === computerChoice) {
+		winner = "Tie";
+	} else if (
+		(playerChoice === "rock" && computerChoice === "scissors") ||
+		(playerChoice === "paper" && computerChoice === "rock") ||
+		(playerChoice === "scissors" && computerChoice === "paper")
+	) {
+		winner = "Player";
+	} else {
+		winner = "Computer";
+	}
+
+	// get the probability of each outcome
+	const total = choices.length * choices.length;
+	const playerProb = (choices.indexOf(playerChoice) * choices.length + randomNum + 1) / total;
+	const computerProb = 1 / choices.length;
+	const tieProb = 1 - playerProb - computerProb;
+
+	// display the result and probability
+	resultDiv.innerHTML = `Player chose ${playerChoice}, computer chose ${computerChoice}. ${winner} wins!<br>Probability:<br>Player: ${playerProb.toFixed(2)}<br>Computer: ${computerProb.toFixed(2)}<br>Tie: ${tieProb.toFixed(2)}`;
+	alert(`Player chose ${playerChoice}, computer chose ${computerChoice}. ${winner} wins!\nProbability:\nPlayer: ${playerProb.toFixed(2)}\nComputer: ${computerProb.toFixed(2)}\nTie: ${tieProb.toFixed(2)}`);
+}
+</script>
